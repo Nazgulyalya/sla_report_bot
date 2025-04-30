@@ -132,7 +132,6 @@ if added or removed:
         change_summary += f"\n➖ Отключены: {', '.join(sorted(removed))}"
 
 print(change_summary)
-
 excel_path = os.path.join(month_folder, output_file_xlsx)
 
 with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
@@ -149,21 +148,18 @@ with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
             cell.border = thin_border
             cell.font = Font(name="Arial", size=10)
     
-    ws.column_dimensions[get_column_letter(1)].width = 5  # Первая колонка (№)
+    ws.column_dimensions[get_column_letter(1)].width = 5 
     for col in range(2, ws.max_column + 1):
         max_length = max(len(str(cell.value)) for cell in ws[get_column_letter(col)])
-        ws.column_dimensions[get_column_letter(col)].width = max_length + 2  # Запас
-
-
+        ws.column_dimensions[get_column_letter(col)].width = max_length + 2 
 
 def send_document_with_caption(file_path, message):
     proxies = {
-        "http": "http://192.168.8.2:3128",
-        "https": "http://192.168.8.2:3128",
+        "http": "http://ifyouneed",
+        "https": "http://ifyouneed",
     }
 
-    telegram_url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
-    
+    telegram_url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"    
     try:
         with open(file_path, "rb") as f:
             response = requests.post(
@@ -187,6 +183,4 @@ def send_document_with_caption(file_path, message):
         print(f"[ERROR] Ошибка отправки документа в Telegram: {e}", flush=True)
 
 final_message = f"Доброе утро!\nСредний SLA: {avg_sla:.4f}%\n{len(df)-1} компаний\n{formatted_date}{change_summary}"
-
 send_document_with_caption(excel_path, final_message)
-
