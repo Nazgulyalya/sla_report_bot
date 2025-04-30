@@ -1,0 +1,6 @@
+pandas
+openpyxl
+fpdf
+psycopg2-binary
+requests
+
