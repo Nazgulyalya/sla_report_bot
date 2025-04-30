@@ -55,9 +55,6 @@ if report_type == "daily":
     WHERE 
       app.is_test = 0  
       AND app.product != 'platform0'
-      AND h.hostname NOT LIKE '%sgr2%'
-      AND h.hostname NOT LIKE '%ethalon-kedo%'
-      AND h.hostname NOT LIKE '%test%'
     GROUP BY h.hostname
     ORDER BY sla ASC;
     """
@@ -83,9 +80,6 @@ elif report_type == "weekly":
     WHERE 
       app.is_test = 0  
       AND app.product != 'platform0'
-      AND h.hostname NOT LIKE '%sgr2%'
-      AND h.hostname NOT LIKE '%ethalon-kedo%'
-      AND h.hostname NOT LIKE '%test%'
     GROUP BY h.hostname
     ORDER BY sla ASC;
     """
