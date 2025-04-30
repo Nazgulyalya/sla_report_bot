@@ -19,15 +19,15 @@ SLA-отчетов из PostgreSQL и отправки их в Telegram.
 
 sla_report/
 
-├── docker-compose.yml \# Запуск контейнера
+├── docker-compose.yml 
 
-├── Dockerfile \# Образ Python-приложения
+├── Dockerfile 
 
-├── requirements.txt \# Python-зависимости
+├── requirements.txt 
 
 └── python/
 
-└── main.py \# Основной код бота
+└── main.py 
 
 ## **🔧 Используемые технологии**
 
