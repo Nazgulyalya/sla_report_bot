@@ -1,123 +1,27 @@
-# **📊 SLA Reporting Bot**
+# SLA Report Bot
 
-Проект для автоматической генерации ежедневных и еженедельных
-SLA-отчетов из PostgreSQL и отправки их в Telegram.
+Telegram bot that automates the generation and delivery of SLA (Service Level 
+Agreement) reports for infrastructure services. Built to replace a manual 
+reporting process during my work as a Monitoring Specialist.
 
-## **⚙️ Возможности**
+## Problem
+SLA reports were assembled by hand every day — pulling metrics, formatting, 
+and sending them out. Slow and error-prone.
 
--   Подключение к существующей PostgreSQL-базе
+## What it does
+- Queries availability & performance metrics from a PostgreSQL database
+- Aggregates them into a clean SLA summary (uptime %, incidents, etc.)
+- Sends the formatted report automatically to a Telegram channel on schedule
 
--   Генерация **ежедневных** и **еженедельных** отчетов по SLA
+## Impact
+Reduced manual report preparation time by ~80%.
 
--   Автоматическое формирование отчета в .xlsx
+## Tech stack
+Python · PostgreSQL (SQL) · Telegram Bot API · [scheduler — cron / schedule / APScheduler]
 
--   Отправка отчета в Telegram
-
--   Отслеживание изменений в списке систем (что добавилось/исчезло)
-
-## **📁 Структура проекта**
-
-sla_report/
-
-├── docker-compose.yml 
-
-├── Dockerfile 
-
-├── requirements.txt 
-
-└── python/
-
-└── main.py 
-
-## **🔧 Используемые технологии**
-
--   Python 3.10+
-
--   PostgreSQL (внешняя БД)
-
--   pandas, openpyxl, python-telegram-bot
-
--   Docker + Docker Compose
-
-## 
-
-## **📥 Входные данные**
-
-### **Требуемые таблицы в PostgreSQL:**
-
-#### **m_downtime (информация о простоях)**
-
-  -----------------------------------------------------------------------
-  **Поле**         **Тип**         **Описание**
-  ---------------- --------------- --------------------------------------
-  hostname         текст           Имя сервера/системы
-
-  time             timestamp       Время простоя
-
-  downtime         float/int       Длительность в секундах
-  
-  -----------------------------------------------------------------------
-
-#### **md_applications (мета-инфо о системах)**
-
-  -----------------------------------------------------------------------
-  **Поле**       **Тип**         **Описание**
-  -------------- --------------- ----------------------------------------
-  hostname       текст           Имя сервера/системы
-
-  is_test        bool/int        Признак тестовой системы (0 --- нет)
-
-  product        текст           Признак рабочей системы (product0 --- нет) 
-  
-  -----------------------------------------------------------------------
-
-> ⚠️ Фильтры: исключаются системы с is_test=1, product=\'platform0\', и
-> с именами, содержащими test, sgr2, ethalon-kedo.
-
-## **📤 Выходные данные**
-
--   .xlsx файл отчета: sla(YYYY-MM-DD).xlsx или
-    > sla(YYYY-MM-DD_YYYY-MM-DD).xlsx
-
--   Telegram-сообщение с отчетом, средним SLA и списком изменений в
-    > системах
-
-## **🚀 Быстрый старт**
-
-### **1. Подготовка .env файла и main.py кода**
-
-Пропишите в main.py
-
-DB_HOST=ваш_хост
-
-DB_PORT=5432
-
-DB_NAME=название_бд
-
-DB_USER=пользователь
-
-DB_PASSWORD=пароль
-
-
-Создайте .env в корне проекта:
-
-TELEGRAM_TOKEN=токен_бота
-
-TELEGRAM_CHAT_ID=чат_id
-
-### **2. Сборка и запуск**
-
-docker-compose up \--build
-
-Контейнер автоматически выполнит ежедневный и недельный отчеты согласно
-расписанию или при вызове вручную.
-
-## **🛠 Основной скрипт: main.py**
-
--   SQL-запрос строится в зависимости от типа отчета (daily или weekly)
-
--   Выполняется подключение к БД и формируется таблица
-
--   Отчет сохраняется в директорию Документы/sla_reporting/YYYY-MM
-
--   Telegram-бот отправляет файл + статистику
+## Run
+```bash
+pip install -r requirements.txt
+# add your credentials to .env (BOT_TOKEN, DB_URL)
+python [main.py]
+```
